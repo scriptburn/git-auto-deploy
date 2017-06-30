@@ -1,0 +1,28 @@
+{% if pagination.needed %}
+     
+<ul class="pagination justify-content-center">
+    {% if (pagination.count>
+    1   ) %}
+    <li class="page-item {% if   pagination.page == 1 %}disabled{% endif %} ">
+        <a class="page-link" href="{% if   pagination.page == 1 %}#{%else%}{{urlFor(pagination.url,{'page':i},true)}}{% endif %} " tabindex="-1">
+            Previous
+        </a>
+    </li>
+    {% endif%}
+    {% for i in 1..pagination.lastpage %}
+    <li class="page-item {% if i == pagination.page %}active{% endif %}">
+        <a class="page-link" href="{{urlFor(pagination.url,{'page':i},true)}}">
+            {{ i }}
+        </a>
+    </li>
+    {% endfor %}
+    {% if (pagination.count>
+    1   ) %}
+    <li class="page-item {% if   pagination.page == pagination.lastpage %}disabled{% endif %} ">
+        <a class="page-link" href="{% if   pagination.page == pagination.lastpage %}#{%else%}{{urlFor(pagination.url,{'page':i},true)}}{% endif %} " tabindex="-1">
+            Next
+        </a>
+    </li>
+    {% endif%}
+</ul>
+{% endif %}

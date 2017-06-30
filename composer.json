@@ -1,0 +1,34 @@
+{
+    "name": "akrabat/slim3-skeleton",
+    "description": "Simple Slim Framework 3 skeleton with Twig & Monolog.",
+    "license": "BSD-3-Clause",
+    "type": "project",
+    "keywords": ["slim-framework", "skeleton"],
+    "authors": [
+        {
+            "name": "Rob Allen",
+            "email": "rob@akrabat.com",
+            "homepage": "http://akrabat.com"
+        }
+    ],
+    "autoload": {
+                "files":["app/src/Libraries/functions.php"],
+
+        "psr-4": {
+            "App\\": "app/src"
+        }
+    },
+    "require": {
+        "slim/slim": "^3.0",
+        "slim/twig-view": "^2.0",
+        "slim/flash": "^0.2.0",
+        "monolog/monolog": "^1.13",
+        "slim/pdo": "^1.10",
+        "bryanjhv/slim-session": "^3.3",
+        "kanellov/slim-twig-flash": "^0.2.0",
+        "jeremykendall/password-validator": "^3.0",
+        "symfony/process": "^3.3",
+        "akrabat/rka-ip-address-middleware": "^0.5.0",
+        "phpmailer/phpmailer": "^5.2"
+    }
+}

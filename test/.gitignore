@@ -1,0 +1,14 @@
+*
+!.gitignore
+
+!pre_post_hooks.php
+!test.txt
+!gh/git-auto-deploy-test-gl
+gh/git-auto-deploy-test-gl/*
+
+
+!bb/git-auto-deploy-test-bb
+bb/git-auto-deploy-test-bb/*
+
+!gl/git-auto-deploy-test-gl
+gl/git-auto-deploy-test-gl/*
