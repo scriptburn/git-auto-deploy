@@ -1,0 +1,79 @@
+{% extends 'simple.layout.html.twig' %}
+{% block title %}Please login{% endblock %}
+{% block head %}
+<style type="text/css">
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+   
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
+</style>
+{% endblock %}
+{% block body %}
+<div class="card form-signin ">
+    <div class="card-block">
+        <h4 class="card-title">
+            Please sign in
+        </h4>
+        {% include 'flash.twig' %}
+        {% set form = flash('form') %}
+        <form  class="card-text" method="post">
+            <label for="inputEmail" class="sr-only">
+                Email address
+            </label>
+            <input type="text" name="username" id="inputEmail" class="form-control" placeholder="User Name" required="" autofocus="" value="{{ form.username }}"/>
+            <label for="inputPassword"  class="sr-only">
+                Password
+            </label>
+            <input type="password"  name="password" id="inputPassword" class="form-control" placeholder="Password" required=""  value="{{ form.password }}"/>
+             
+            <label class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" value="1" name="remember">
+  <span class="custom-control-indicator"></span>
+  <span class="custom-control-description">Remember me</span>
+</label>
+            <button class="btn btn-lg btn-primary " type="submit">
+                Sign in
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

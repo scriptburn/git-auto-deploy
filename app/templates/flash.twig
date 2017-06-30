@@ -1,0 +1,36 @@
+{% set error_message = flash('error') %}
+{% set success_message = flash('success') %}
+{% if error_message |length %}
+<div class="alert alert-danger" role="alert">
+   {% if error_message is iterable and error_message|length>1 %}
+
+ <ul  >
+    {% for msg in error_message %}
+    <li>{{ msg }}</li>
+    {% endfor %}
+</ul>
+{%else%}
+<strong>{{error_message}}</strong>
+{%endif%}
+
+
+</div>
+
+{%endif%}
+{% if success_message |length %}
+<div class="alert alert-success" role="alert">
+  {% if success_message is iterable  and success_message|length>1 %}
+
+ <ul  >
+    {% for msg in success_message %}
+    <li>{{ msg }}</li>
+    {% endfor %}
+</ul>
+{%else%}
+<strong>{{success_message}}</strong>
+{%endif%}
+
+
+</div>
+
+{%endif%}

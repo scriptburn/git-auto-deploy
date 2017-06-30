@@ -1,0 +1,255 @@
+{% extends 'full.layout.html.twig' %}
+{% block title %}Projects{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+
+<style type="text/css">
+
+
+ .form-project {
+  max-width: 1080px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-project .form-signin-heading,
+ 
+ 
+.form-project .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-project .form-control:focus {
+  z-index: 2;
+}
+.form-project input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+ 
+
+
+</style>
+{% endblock %}
+
+
+ 
+
+{% block body %}
+{% include 'flash.twig' %}
+<div class="card form-project ">
+    <div class="card-block">
+        <h4 class="card-title ">
+            Project Search
+        </h4>
+        <form method="post" action="{{urlFor('project_search')}}">
+            <div class="form-group ">
+                <label for="search_text"  >
+                    Search text
+                </label>
+               
+                    <input class="form-control" type="text" value="{{query.search_text}}" id="search_text" name="search_text"/>
+                
+            </div>
+            <div class="form-group">
+                <label for="project_status"  >
+                    Project status
+                </label>
+ 
+                <select   class="form-control " name="project_status" id="project_status"    >
+                		 <option value="" >
+                		 	Any
+                     </option>
+                    {% for key,value in project_status %}  
+                    <option value="{{ key }}" {% if query.project_status ==(key) and query.project_status!="" %} selected{%endif%} >
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="project_type"  >
+                    Project Type
+                </label>
+ 
+                <select   class="form-control" name="project_type" id="project_type"    >
+                         <option value="" >
+                            Any
+                     </option>
+                    {% for key,value in project_types %}  
+                    <option value="{{ key }}" {% if query.project_type ==(key) and query.project_type!="" %} selected{%endif%} >
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+             <button class="btn btn-lg btn-primary " type="submit" name="search">
+                Search
+            </button> 
+            <button class="btn btn-lg btn-info " type="submit" name="reset">
+                Reset
+            </button> 
+        </form>
+    </div>
+</div>
+<br/>
+<div class="card form-project ">
+    <div class="card-block">
+        <h4 class="card-title float-left">
+            Project list ({{pagination.count }} item{{pagination.count>1?'s':'' }}) 
+        </h4>
+        <div class="float-right">
+          {% if  pager.pagination.count    %}
+            <a  class="btn btn-info btn-sm" href="{{ urlFor('project_form') }}">
+                Create project
+            </a>
+          {% endif %}
+        </div>
+
+        <table class="table table-responsive1 table-hover">
+            <thead>
+                <tr>
+                      <th>
+                        #
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Branch
+                    </th>
+                    
+                    
+                     <th>
+                        Status
+                    </th>
+
+                     
+                </tr>
+            </thead>
+            <tbody>
+              {% if pager.pagination.count==0 %}
+                <tfoot><tr> <td colspan="4" class="text-info text-center">Sorry no projects found. <a  class="btn btn-info btn-sm" href="{{ urlFor('project_form') }}">
+                Create project
+            </a></td> </tr></tfoot>
+                 
+               {% else %}
+                {% for project in projects %}
+                <tr>
+                     <td>{{project.id}}</td>
+                    <td>
+                        {{ project.name }}<strong class="text-info"> @ {{ attribute(project_types, project.type) }}</strong>
+                         
+                        {% if project.last_hook_time!='0000-00-00 00:00:00' %}
+                        <div>
+                            Last deployment on <strong>{{project.last_hook_time |date("d M Y h:i:s a")}} was <strong class="{{project.last_hook_status?'text-success':'text-danger'}}">{{project.last_hook_status?'successfull':'failed'}} </strong> and took <strong>{{project.last_hook_duration|round}} seconds</strong>
+                            <div><a data-toggle="modal" data-target="#deploy_log_modal" href="#" data-project-id="{{project.id}}">View Log
+                        <textarea style="display:none" id="project_{{project.id}}">{{project.last_hook_log}}</textarea></div>
+                        </div>
+                         {%endif%}
+                         
+                        
+                         
+                    </td>
+                    <td>
+                        {{ project.branch }}
+                    </td>
+                     
+                    <td>
+                        {{ attribute(project_status, project.status) }}
+                    </td>
+                    <td>
+
+                      <div class="dropdown ">
+  <a class="btn-sm btn btn-secondary dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Action
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="{{ urlFor('project_form',{'id':project.id}) }}">Edit</a>
+    <a class="dropdown-item project_delete" href="#" data-id="{{project.id}}" >Delete</a>
+   </div>
+</div>
+
+
+                         
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+                <form method="post" id="frm_delete" action="{{urlFor('project_delete')}}"><input type="hidden" name="id" id="delete_id"></form>
+            </tbody>
+
+            <tfoot><tr> <td colspan="4" class="text-info">{{ pager.paging|raw }}</td> </tr></tfoot>
+
+
+        </table>
+    </div>
+</div>
+ 
+<div class="modal fade" id="deploy_log_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Last Deployment log</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="max-height:400px;overflow-y:scroll">
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block foot %}
+
+<script>
+
+$(function() 
+{
+
+$('#deploy_log_modal').on('show.bs.modal', function (event) {
+       var modal = $(this)
+
+  var id =  $(event.relatedTarget).data('project-id') // Button that triggered the modal
+ var log=nl2br($('#project_'+id).text());
+
+   modal.find('.modal-title').text('Last Deployment log for project ' + id)
+
+  modal.find('.modal-body').html( log?log:'No content')
+})
+
+
+
+    $( ".project_delete" ).on( "click", function(){
+
+    	  if(!confirm('Are you sure?'))
+    	  {
+    	  	return false;
+    	  }
+
+		$( '#delete_id' ).val($( this ).data('id'));
+
+    	  $( '#frm_delete' ).submit();
+    	  return false;
+    } );
+
+});
+function nl2br (str, is_xhtml) {   
+    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
+    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
+}
+</script>
+
+ {%endblock%}

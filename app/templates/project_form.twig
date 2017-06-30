@@ -1,0 +1,177 @@
+{% extends 'full.layout.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}
+<style type="text/css">
+
+
+ .form-project {
+  max-width: 630px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-project .form-signin-heading,
+ 
+ 
+.form-project .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-project .form-control:focus {
+  z-index: 2;
+}
+.form-project input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+ 
+
+
+</style>
+{% endblock %}
+{% block body %}
+<div class="card form-project ">
+    <div class="card-block">
+        <h4 class="card-title">
+            {{ title }}
+        </h4>
+        {% include 'flash.twig' %}
+        {% set form = flash('form')?flash('form'):form %}
+        <form    method="post">
+            <div class="form-group">
+                <label for="type"  >
+                    Type
+                </label>
+                <select   class="form-control" name="type" id="type" required  >
+                    {% for key,value in project_types %}
+                    <option value="{{ key }}" {% if form.type ==key%} selected{%endif%}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="name">
+                    Name
+                </label>
+                <input type="text"  required class="form-control" id="name" name="name"  placeholder="Repo name" value="{{ form.name }}"/>
+                <small  class="form-text text-muted">
+                    Enter repository name,Ex: scriptburn/test
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="branch">
+                    Branch
+                </label>
+                <input type="text"  required class="form-control" id="branch"  name="branch"  placeholder="Repo Branch"  value="{{ form.branch }}"/>
+                <small  class="form-text text-muted">
+                    Enter repository branch. Ex: master,develop
+                </small>
+            </div>
+            <div class="form-group" id="gh_secret">
+                <label for="secret">
+                    Secret
+                </label>
+                <input type="text"     value="{{ form.secret }}"  class="form-control" id="secret"   name="secret"/>
+                <small  class="form-text text-muted">
+                    Repositry secret which you entred in webhook section of github or gitlab
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="path">
+                    Local Deploy Path
+                </label>
+                <input type="text"  required  value="{{ form.path }}"  class="form-control" id="path" placeholder="Local path" name="path"/>
+                <small  class="form-text text-muted">
+                    Local path where to deploy
+                </small>
+            </div>
+            <div class="form-group" style="display:none">
+                <label for="owner">
+                    Owner User
+                </label>
+                <input type="text"  value="{{ form.owner }}" class="form-control" id="owner" name="owner" placeholder="Owner User"/>
+                <small  class="form-text text-muted">
+                    Set file owners to this user:group. Ex: admin:admin
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="pre_hook">
+                    Pre Hook script
+                </label>
+                <input type="text"  value="{{ form.pre_hook }}" class="form-control" id="pre_hook" name="pre_hook"  />
+                <small  class="form-text text-muted">
+                    You can provide a  command that must run before processing the webhook. This script will receive hook data in stdin
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="post_hook">
+                    Post Hook script
+                </label>
+                <input type="text"  value="{{ form.post_hook }}" class="form-control" id="post_hook" name="post_hook"  />
+                <small  class="form-text text-muted">
+                    You can provide a  command that must run after processing the webhook. This script will receive hook data in stdin
+                </small>
+            </div>
+             <div class="form-group">
+                <label for="post_hook">
+                    Deploy status email
+                </label>
+                <input type="text"  value="{{ form.email_result }}" class="form-control" id="email_result" name="email_result"  />
+                <small  class="form-text text-muted">
+                    An email will be sent to this email with deploy result
+                </small>
+            </div>
+ <div class="form-group">
+            <label class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="composer_update" value="1" {{form.composer_update?'checked':''}}>
+  <span class="custom-control-indicator"></span>
+  <span class="custom-control-description">Run composer update after deployment?</span>
+</label>
+</div>
+            <div class="form-group">
+                <label for="status"  >
+                    Status
+                </label>
+                {% set form_status =form.status==''?1:form.status %}
+                <select   class="form-control" name="status" id="status" required  >
+                    {% for key,value in project_status %}
+                    <option value="{{ key }}"  {% if form_status ==(key) and form_status!="" %} selected{%endif%}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="btn btn-lg btn-primary " type="submit" name="submit_project">
+                Submit
+            </button>
+            <a  class="btn btn-info" href="{{ urlFor('project_form') }}">
+                Create project
+            </a>
+            <a  class="btn btn-info" href="{{ urlFor('projects') }}">
+                Cancel
+            </a>
+            <input  type="hidden" name="id" value="{{ project.id }}"/>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block foot %}
+    <script>
+$(function() {
+    $('#type').change(function(){
+        if($('#type').val() == 'gh' || $('#type').val() == 'gl') {
+            $('#gh_secret').show(); 
+        } else {
+            $('#gh_secret').hide(); 
+        } 
+    });
+    $('#type').change();
+});   </script>
+{% endblock %}
+ 

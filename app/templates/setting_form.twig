@@ -1,0 +1,118 @@
+{% extends 'full.layout.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}
+<style type="text/css">
+
+
+ .form-project {
+  max-width: 530px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-project .form-signin-heading,
+ 
+ 
+.form-project .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-project .form-control:focus {
+  z-index: 2;
+}
+.form-project input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+ 
+.smtp{display:{{form.send_method=='smtp'?'block':'none'}};}
+
+</style>
+{% endblock %}
+{% block body %}
+<div class="card form-project ">
+    <div class="card-block">
+        <h4 class="card-title">
+            Email Settings
+        </h4>
+        {% include 'flash.twig' %}
+        {% set form = flash('form')?flash('form'):form %}
+        <form    method="post">
+            <div class="form-group">
+                <label for="send_method"  >
+                    Send method
+                </label>
+                <select   class="form-control" name="send_method" id="send_method" required  >
+                    {% for key,value in send_methods %}
+                    <option value="{{ key }}" {% if form.send_method ==key%} selected{%endif%}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group smtp">
+                <label for="smtp_host">
+                    SMTP Host
+                </label>
+                <input type="text"  required class="form-control" id="smtp_host" name="smtp_host"    value="{{ form.smtp_host }}"/>
+                <small  class="form-text text-muted">
+                    Enter SMTP host, Ex: smtp1.example.com
+                </small>
+            </div>
+            <div class="form-group smtp">
+                <label for="smtp_user">
+                    SMTP user
+                </label>
+                <input type="text"  required class="form-control" id="smtp_user" name="smtp_user"    value="{{ form.smtp_user }}"/>
+            </div>
+            <div class="form-group smtp">
+                <label for="smtp_password">
+                    SMTP password
+                </label>
+                <input type="password"  required class="form-control" id="smtp_password" name="smtp_password"    value="{{ form.smtp_password }}"/>
+            </div>
+            <div class="form-group smtp">
+                <label for="smtp_port">
+                    SMTP port
+                </label>
+                <input type="text"  required class="form-control" id="smtp_port" name="smtp_port"    value="{{ form.smtp_port?form.smtp_port:'587' }}"/>
+            </div>
+            <div class="form-group smtp">
+                <label for="smtp_enc"  >
+                    Encryption method
+                </label>
+                <select   class="form-control" name="smtp_enc" id="smtp_enc"    >
+                    {% for key,value in smtp_enc_methods %}
+                    <option value="{{ key }}" {% if form.smtp_enc ==key%} selected{%endif%}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+             
+
+            <button class="btn btn-lg btn-primary " type="submit" name="submit_project">
+                Submit
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block foot %}
+<script>
+$(function() {
+    $('#send_method').change(function(){
+        if($('#send_method').val() == 'smtp') {
+            $('.smtp').show(); 
+        } else {
+            $('.smtp').hide(); 
+        } 
+    });
+    $('#send_method').change();
+});   </script>
+{% endblock %}
