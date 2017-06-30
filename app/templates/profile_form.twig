@@ -1,0 +1,93 @@
+{% extends 'full.layout.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}
+<style type="text/css">
+
+
+ .form-project {
+  max-width: 530px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-project .form-signin-heading,
+ 
+ 
+.form-project .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-project .form-control:focus {
+  z-index: 2;
+}
+.form-project input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+ 
+
+
+</style>
+{% endblock %}
+{% block body %}
+<div class="card form-project ">
+    <div class="card-block">
+        <h4 class="card-title">
+            Update profile
+        </h4>
+        {% include 'flash.twig' %}
+        {% set form = flash('form')?flash('form'):form %}
+        <form    method="post">
+            <div class="form-group">
+                <label for="email"  >
+                    Email
+                </label>
+                <input value="{{form.email}}" type="text"  required class="form-control" id="email" name="email"     /> 
+             </div>
+
+            <div class="form-group">
+                <label for="current_password"  >
+                    Current Password
+                </label>
+                <input type="password"    class="form-control" id="current_password" name="current_password"     /> 
+             </div>
+            <div class="form-group">
+                <label for="password1">
+                    New Password
+                </label>
+                 <input type="password"    class="form-control" id="password1" name="password1"     />
+            </div>
+            <div class="form-group">
+                <label for="password2">
+                    Confirm New Password
+                </label>
+                 <input type="password"    class="form-control" id="password2" name="password2"     />
+            </div>
+             
+            <button class="btn btn-lg btn-primary " type="submit" name="profile_from">
+                Submit
+            </button>
+             
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block foot %}
+    <script>
+$(function() {
+    $('#type').change(function(){
+        if($('#type').val() == 'gh') {
+            $('#gh_secret').show(); 
+        } else {
+            $('#gh_secret').hide(); 
+        } 
+    });
+    $('#type').change();
+});   </script>
+{% endblock %}
+ 

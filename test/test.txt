@@ -1,0 +1,22 @@
+
+cd /Volumes/MacData/htdocs/tools2/git-auto-deploy/test/bb/git-auto-deploy-test-bb;
+git clone git@bitbucket.org:rajneeshojha/test.git /Volumes/MacData/htdocs/tools2/git-auto-deploy/test/bb/git-auto-deploy-test-bb;
+
+
+
+
+
+
+cd /Volumes/MacData/htdocs/tools2/git-auto-deploy/test/gh/git-auto-deploy-test-gh;
+git clone git@github.com:scriptburn/test.git /Volumes/MacData/htdocs/tools2/git-auto-deploy/test/gh/git-auto-deploy-test-gh;
+
+	git checkout develop; vi readme.html ; git add . ; git commit -m "xxxxxx"; git push origin HEAD
+
+
+cd /Volumes/MacData/htdocs/tools2/git-auto-deploy/test/gl/git-auto-deploy-test-gl
+
+git clone git@gitlab.com:scriptburn/test.git /Volumes/MacData/htdocs/tools2/git-auto-deploy/test/gl/git-auto-deploy-test-gl\
+
+git checkout master; vi README.md ; git add . ; git commit -m "xxxxxx"; git push origin HEAD
+
+git checkout -b develop

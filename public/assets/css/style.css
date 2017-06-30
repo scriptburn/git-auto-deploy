@@ -1,0 +1,25 @@
+body {
+    padding-top: 5rem;
+}
+
+.sticky-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background-color: #f5f5f5;
+}
+
+.pink-skin {
+    background-color: #532a3c;
+}
+
+body {
+    padding-top: 80px;
+        background: #f5f5f5;
+}
+
+.pagination {
+    background-color: transparent;
+}

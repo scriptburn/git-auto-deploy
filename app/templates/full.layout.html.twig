@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>
+            {% block title %}Git Deploy{% endblock %}
+        </title>
+        <meta charset="UTF-8"/>
+        <meta content="initial-scale=1, shrink-to-fit=no, width=device-width" name="viewport"/>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+        <!-- add material css | replace bootstrap.css -->
+        <link href="{{ base_url() }}/assets/css/material.min.css" rel="stylesheet"/>
+        <link href="{{ base_url() }}/assets/css/style.css" rel="stylesheet"/>
+        {% block head %}{% endblock %}
+    </head>
+    <body>
+        <nav class="pink-skin navbar navbar-toggleable-md navbar-inverse   fixed-top">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon">
+                </span>
+            </button>
+            <a class="navbar-brand" href="{{ urlFor('projects') }}">
+                <img style="height: 64px;" src="http://scriptburn.com/wp-content/uploads/edd/2015/07/scriptburn-logo1.png"/>
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    {% if not loggedin %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ urlFor('login') }}">
+                            Login
+                        </a>
+                    </li>
+                    {%else%}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ urlFor('projects') }}">
+                            Projects
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            {{ auth_user.username }}
+                        </a>
+                        <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ urlFor('profile') }}">
+                                Profile
+                            </a>
+                            <a class="dropdown-item" href="{{ urlFor('settings') }}">
+                                Settings
+                            </a>
+                            <a class="dropdown-item" href="{{ urlFor('logout') }}">
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+                    {%endif%}
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row ">
+                <div class="col-lg-12">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+        </div>
+        <footer class="footer sticky-footer9" style="padding-top: 20px;">
+            <div class="container-fluid text-center">
+                
+                    © <a href="http://scriptburn.com">ScriptBurn</a> {{ "now"|date("Y") }} <a href="https://github.com/scriptburn/git-auto-deploy">git-auto-deploy</a>
+
+                 
+            </div>
+        </footer>
+        <!-- js -->
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+        <!-- add material js on top of bootstrap.js -->
+        <script src="{{ base_url() }}/assets/js/material.min.js"></script>
+        {% block foot %}{% endblock %}
+    </body>
+</html>
