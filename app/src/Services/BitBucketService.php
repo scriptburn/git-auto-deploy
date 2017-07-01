@@ -1,7 +1,7 @@
 <?php
 namespace App\Services;
 
- class BitBucketService extends GitService
+class BitBucketService extends GitService
 {
 
     private $valid_bb_ips = ['104.192.143.0/24', '34.198.203.127', '34.198.178.64', '34.198.32.85'];
@@ -10,7 +10,7 @@ namespace App\Services;
     {
         if (isset($data['headers']['HTTP_USER_AGENT'][0]) && stripos($data['headers']['HTTP_USER_AGENT'][0], 'Bitbucket-Webhooks') !== false)
         {
-                                $this->hookData = $data;
+            $this->hookData = $data;
 
             return true;
         }
@@ -27,18 +27,24 @@ namespace App\Services;
     }
     public function parseRemoteBranchName()
     {
+        $index = 'old';
         if (empty($this->hookData['post']['push']['changes'][0]['old']['name']))
+        {
+            $index = 'new';
+        }
+        if (empty($this->hookData['post']['push']['changes'][0][$index]['name']))
         {
             throw new \Exception("Unknown remote branch");
         }
-        elseif (@($this->hookData['post']['push']['changes'][0]['old']['type']) != 'branch')
+        elseif (@($this->hookData['post']['push']['changes'][0][$index]['type']) != 'branch')
         {
             throw new \Exception("Expecting remote branch");
 
         }
 
-        $this->hookData['remote']['branch_name'] = $this->hookData['post']['push']['changes'][0]['old']['name'];
-     }
+        $this->hookData['remote']['branch_name'] = $this->hookData['post']['push']['changes'][0][$index]['name'];
+
+    }
     public function parseRemoteUrl()
     {
         if (empty($this->project['name']))
@@ -51,8 +57,8 @@ namespace App\Services;
             throw new \Exception("Invalid repo name format");
         }
         $this->hookData['remote']['repo_url'] = "git@bitbucket.org:/{$this->project['name']}.git";
-     }
-     public function repoType()
+    }
+    public function repoType()
     {
         return "bb";
     }
