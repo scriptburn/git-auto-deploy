@@ -1,14 +1,14 @@
 {
-    "name": "akrabat/slim3-skeleton",
-    "description": "Simple Slim Framework 3 skeleton with Twig & Monolog.",
-    "license": "BSD-3-Clause",
-    "type": "project",
-    "keywords": ["slim-framework", "skeleton"],
+    "name": "scriptburn/git-auto-deploy",
+    "description": "Deploy your GitHub, GitLab or Bitbucket projects automatically on Git push events or web hooks Edit",
+    "keywords": ["auto-deploy", "bitbucket", "github", "gitlab"],
+    "homepage": "https://github.com/scriptburn/git-auto-deploy",
+    "license": "MIT",
     "authors": [
         {
-            "name": "Rob Allen",
-            "email": "rob@akrabat.com",
-            "homepage": "http://akrabat.com"
+            "name": "Rajneesh Ojha",
+            "email": "contact@scriptburn.com",
+            "homepage": "http://www.scriptburn.com/"
         }
     ],
     "autoload": {

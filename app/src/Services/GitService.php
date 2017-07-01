@@ -146,6 +146,13 @@ abstract class GitService
                     $this->prepareCmd("git", "fetch"), 'cwd' => $repoPath], "Unable to fetch repo"
                 );
 
+                if (!empty($out[1]) && stripos($out[1], "have diverged") !== false)
+                {
+                    $this->exec(['cmd' =>
+                        $this->prepareCmd("git", "pull", ""), 'cwd' => $this->project['path']], "Unable to pull from repo"
+                    );
+                }
+
             }
 
             $out = $this->exec($this->prepareCmd("git", "checkout -f {$this->project['branch']}", " cd $repoPath && GIT_WORK_TREE={$this->project['path']}"), "Unable to checkput repo");
@@ -192,8 +199,8 @@ abstract class GitService
             {
 
                 $_ENV['HOME'] = realpath(__DIR__ . "/../../../");
-                $_ENV['HOME'] = rtrim($_ENV['HOME'],"/") . "/cache";
-               $this->log("Set composer HOME to " .$_ENV['HOME']);
+                $_ENV['HOME'] = rtrim($_ENV['HOME'], "/") . "/cache";
+                $this->log("Set composer HOME to " . $_ENV['HOME']);
 
                 if (!file_exists($_ENV['HOME']))
                 {
@@ -219,12 +226,12 @@ abstract class GitService
 
                     $message = [
                         'subject'    => 'Git Auto deploy for ' . $this->project['name'] . '@' . $this->project['type'] . " was " . ($completed ? 'successfull' : 'failed'),
-                        'body'       => "<code>--". implode("<br/>--", $this->log) . "</code>",
+                        'body'       => "<code>--" . implode("<br/>--", $this->log) . "</code>",
                         'from_email' => $this->project['email_result'],
                         'from_name'  => '',
                     ];
 
-                    $this->utils->mail($this->project['email_result'], $message,['html'=>true]);
+                    $this->utils->mail($this->project['email_result'], $message, ['html' => true]);
                     $this->log("Email sent  ");
 
                 }
@@ -236,7 +243,7 @@ abstract class GitService
                 }
 
             }
-            if (true==false && !empty($this->project['owner']) && count($owner = explode(":", $this->project['owner']) > 1))
+            if (true == false && !empty($this->project['owner']) && count($owner = explode(":", $this->project['owner']) > 1))
             {
                 $this->log("Setting owner of '{$this->project['path']}' to  {$this->project['owner']} ");
                 $out = $this->exec("chown -R {$this->project['path']} {$this->project['owner']} ");
@@ -329,7 +336,7 @@ abstract class GitService
         {
             throw new Exception("Unable to find binary '$bin' location");
         }
-        return "$prepend ".$this->binpaths[$bin . "_path"]." $cmd";
+        return "$prepend " . $this->binpaths[$bin . "_path"] . " $cmd";
     }
 
     public function ip_in_range($ip, $range)
