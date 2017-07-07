@@ -149,13 +149,18 @@ abstract class GitService
                 if (!empty($out[1]) && stripos($out[1], "have diverged") !== false)
                 {
                     $this->exec(['cmd' =>
+                        $this->prepareCmd("git", "reset --hard HEAD", ""), 'cwd' => $this->project['path']], "Unable to reset head"
+                    );
+                    $this->exec(['cmd' =>
+                        $this->prepareCmd("git", "clean -f -d", ""), 'cwd' => $this->project['path']], "Unable to git clean"
+                    );
+                    $this->exec(['cmd' =>
                         $this->prepareCmd("git", "pull", ""), 'cwd' => $this->project['path']], "Unable to pull from repo"
                     );
                 }
 
             }
-
-            $out = $this->exec($this->prepareCmd("git", "checkout -f {$this->project['branch']}", " cd $repoPath && GIT_WORK_TREE={$this->project['path']}"), "Unable to checkput repo");
+             $out = $this->exec($this->prepareCmd("git", "checkout -f {$this->project['branch']}", " cd $repoPath && GIT_WORK_TREE={$this->project['path']}"), "Unable to checkput repo");
 
             if (!empty($out[1]) && stripos($out[1], "Your branch is behind") !== false)
             {
