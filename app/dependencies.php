@@ -121,13 +121,12 @@ $container['db'] = function ($c)
     {
 
         $dsn = "mysql:host={$c->settings['db']['host']};dbname={$c->settings['db']['name']};charset=utf8";
-
-        $pdo          = new \Slim\PDO\Database($dsn, $c->settings['db']['user'], $c->settings['db']['pass']);
+        $pdo          = new \Slim\PDO\Database($dsn, $c->settings['db']['user'], $c->settings['db']['pass'],array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET sql_mode="TRADITIONAL"') );
         $user_table[] = "CREATE TABLE `users` (
   `id` bigint(10) NOT NULL,
   `username` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `role` varchar(255) NOT NULL,
+  `email` varchar(255)  NULL,
+  `role` varchar(255)  NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
@@ -144,17 +143,16 @@ $container['db'] = function ($c)
   `path` varchar(255) NOT NULL,
   `owner` varchar(255) NOT NULL,
   `status` int(1) NOT NULL,
-  `secret` varchar(255) NOT NULL,
-  `pre_hook` varchar(255) NOT NULL,
-  `post_hook` varchar(255) NOT NULL,
-  `email_result` varchar(255) NOT NULL,
-  `uid` bigint(10) NOT NULL,
-    `last_hook_status` int(1) NOT NULL,
-
-  `last_hook_time` datetime NOT NULL,
-  `last_hook_duration` int(5) NOT NULL,
-  `last_hook_log` text NOT NULL,
-    `composer_update` int(1) NOT NULL
+  `secret` varchar(255)  NULL,
+  `pre_hook` varchar(255)  NULL,
+  `post_hook` varchar(255)  NULL,
+  `email_result` varchar(255)  NULL,
+  `uid` bigint(10)  NULL,
+    `last_hook_status` int(1)  NULL,
+  `last_hook_time` datetime  NULL,
+  `last_hook_duration` int(5)  NULL,
+  `last_hook_log` text  NULL,
+    `composer_update` int(1)  NULL
 
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
@@ -167,8 +165,8 @@ $container['db'] = function ($c)
 CREATE TABLE `settings` (
   `name` varchar(255) NOT NULL,
   `value` text NOT NULL,
-  `created` datetime NOT NULL,
-  `updated` datetime NOT NULL,
+  `created` datetime  NULL,
+  `updated` datetime    NULL,
   `expires` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $settings_table[] = "ALTER TABLE `settings`
