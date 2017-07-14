@@ -1,7 +1,13 @@
 <?php
-// Application middleware
 
-// e.g: $app->add(new \Slim\Csrf\Guard);
+$app->add(function (  $request,   $response,   $next)
+{
+         $dbUpdateCheck = new App\Services\DbUpdateService($this->setting, $this->db, ['type' => 'composer', 'path' => __DIR__ . "/../composer.json"]);
+        $dbUpdateCheck->maybeUpdate('scriptburn/git-auto-deploy');
+
+    return $next($request, $response);
+});
+
 $app->add(new \Slim\Middleware\Session([
     'name'        => 'scb_session',
     'autorefresh' => true,
@@ -33,3 +39,5 @@ $app->add(function (  $request,   $response,   $next)
 });
  
 $app->add(new RKA\Middleware\IpAddress(false, []));
+
+
