@@ -42,7 +42,7 @@
         </h4>
         {% include 'flash.twig' %}
         {% set form = flash('form')?flash('form'):form %}
-        <form    method="post">
+        <form    method="post" novalidate>
             <div class="form-group">
                 <label for="send_method"  >
                     Send method
