@@ -121,99 +121,8 @@ $container['db'] = function ($c)
     {
 
         $dsn = "mysql:host={$c->settings['db']['host']};dbname={$c->settings['db']['name']};charset=utf8";
-        $pdo          = new \Slim\PDO\Database($dsn, $c->settings['db']['user'], $c->settings['db']['pass'],array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET sql_mode="TRADITIONAL"') );
-        $user_table[] = "CREATE TABLE `users` (
-  `id` bigint(10) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `email` varchar(255)  NULL,
-  `role` varchar(255)  NULL,
-  `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $pdo = new \Slim\PDO\Database($dsn, $c->settings['db']['user'], $c->settings['db']['pass'], array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET sql_mode="TRADITIONAL"'));
 
-        $user_table[] = "ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);";
-        $user_table[] = " ALTER TABLE `users`
-  MODIFY `id` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;";
-
-        $projects_table[] = "CREATE TABLE `projects` (
-  `id` bigint(20) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `branch` varchar(255) NOT NULL,
-  `path` varchar(255) NOT NULL,
-  `owner` varchar(255) NOT NULL,
-  `status` int(1) NOT NULL,
-  `secret` varchar(255)  NULL,
-  `pre_hook` varchar(255)  NULL,
-  `post_hook` varchar(255)  NULL,
-  `email_result` varchar(255)  NULL,
-  `uid` bigint(10)  NULL,
-    `last_hook_status` int(1)  NULL,
-  `last_hook_time` datetime  NULL,
-  `last_hook_duration` int(5)  NULL,
-  `last_hook_log` text  NULL,
-    `composer_update` int(1)  NULL
-
-
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-        $projects_table[] = "ALTER TABLE `projects`
-  ADD PRIMARY KEY (`id`);";
-        $projects_table[] = "ALTER TABLE `projects`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;";
-
-        $settings_table[] = "
-CREATE TABLE `settings` (
-  `name` varchar(255) NOT NULL,
-  `value` text NOT NULL,
-  `created` datetime  NULL,
-  `updated` datetime    NULL,
-  `expires` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-        $settings_table[] = "ALTER TABLE `settings`
-  ADD PRIMARY KEY (`name`);";
-
-        $table_exists = function ($table) use ($pdo)
-        {
-            try
-            {
-
-                $result = $pdo->query("select 1 from $table limit 1")->execute();
-
-                return true;
-            }
-            catch (\Exception $e)
-            {
-                return false;
-            }
-        };
-        $create_table = function ($table) use ($pdo)
-        {
-
-            $table = is_array($table) ? $table : [$table];
-            foreach ($table as $tbl)
-            {
-                $pdo->query($tbl);
-
-            }
-        };
-        if (!$table_exists('users'))
-        {
-            $create_table($user_table);
-
-            $validator = new JeremyKendall\Password\PasswordValidator();
-            $pdo->insert(['username', 'password', 'role'])
-                ->into('users')
-                ->values(['admin', $validator->rehash('admin'), 'admin'])
-                ->execute(false);
-        }
-        if (!$table_exists('projects'))
-        {
-            $create_table($projects_table);
-        }
-        if (!$table_exists('settings'))
-        {
-            $create_table($settings_table);
-        }
         return $pdo;
 
     }
@@ -234,5 +143,6 @@ $container['flash'] = function ()
 };
 $container['setting'] = function ($c)
 {
-    return new App\Services\SettingService($c['db']);
+
+    return new \Scriptburn\Settings($c['db']);
 };

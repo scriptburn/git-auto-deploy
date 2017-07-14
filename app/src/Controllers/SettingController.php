@@ -23,25 +23,26 @@ class SettingController
 
     public function settings(Request $request, Response $response, $args)
     {
-
         if ($request->isPost())
         {
+
+
             $params = array_merge($request->getQueryParams(), is_array($request->getParsedBody()) ? $request->getParsedBody() : [], $args);
 
              try
             {
                 $this->setting->set([
-                    'send_method'   => $params['send_method'],
-                    'smtp_host'     => $params['smtp_host'],
-                    'smtp_user'     => $params['smtp_user'],
-                    'smtp_password' => $params['smtp_password'],
-                    'smtp_port'     => $params['smtp_port'],
-                    'smtp_enc'      => $params['smtp_enc'],
-                    'notify_deploy'=>$params['notify_deploy'],
+                    'send_method'   => @$params['send_method'],
+                    'smtp_host'     => @$params['smtp_host'],
+                    'smtp_user'     => @$params['smtp_user'],
+                    'smtp_password' => @$params['smtp_password'],
+                    'smtp_port'     => @$params['smtp_port'],
+                    'smtp_enc'      => @$params['smtp_enc'],
+                    'notify_deploy'=>@$params['notify_deploy'],
                 ]);
 
                 $this->flash->addMessage('success', 'Settings saved');
-                 return $response->withRedirect($this->utils->urlFor('settings'));
+                return $response->withRedirect($this->utils->urlFor('settings'));
             }
              catch (\Exception $e)
             {
