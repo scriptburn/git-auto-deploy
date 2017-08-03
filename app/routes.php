@@ -31,7 +31,7 @@ $app->get('/logout', 'AuthController:logout')
 $app->get('/', 'ProjectsController:list')
     ->setName('projects')->add($is_loggedin);
 
-$app->get('/projects', 'ProjectsController:list')
+$app->get('/projects', 'ProjectsController:listAll')
     ->setName('project_list')->add($is_loggedin);
 
 $app->map(['GET', 'POST'], '/project[/{id}]', 'ProjectsController:form')
