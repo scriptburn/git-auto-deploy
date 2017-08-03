@@ -24,7 +24,7 @@ class ProjectsController
 
     }
 
-    function list(Request $request, Response $response, $args)
+    function listAll(Request $request, Response $response, $args)
     {
         $args            = array_merge($request->getQueryParams(), is_array($request->getParsedBody()) ? $request->getParsedBody() : [], $args);
         $params['query'] = $request->getQueryParams();
