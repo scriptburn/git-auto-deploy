@@ -6,7 +6,7 @@ class GitLabService extends GitService
 
     public function identify($data)
     {
-        if (isset($data['headers']['HTTP_USER_AGENT'][0]) && stripos($data['headers']['HTTP_USER_AGENT'][0], 'Go-http-client') !== false && isset($data['headers']['HTTP_X_GITLAB_EVENT'][0]))
+        if (isset($data['headers']['HTTP_X_GITLAB_EVENT'][0]))
         {
             $this->hookData = $data;
 
