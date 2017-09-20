@@ -44,9 +44,10 @@ class RepoService
     public function identifyandValidateRepo($data, $request)
     {
 
- 
+    $this->log($data);
         foreach ($this->repoServices as $repoService)
         {
+
             if ($repoService->identify($data))
             {
 
