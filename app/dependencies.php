@@ -143,6 +143,5 @@ $container['flash'] = function ()
 };
 $container['setting'] = function ($c)
 {
-
     return new \Scriptburn\Setting\Setting($c['db']);
 };
