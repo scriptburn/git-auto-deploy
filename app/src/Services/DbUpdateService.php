@@ -53,7 +53,7 @@ class DbUpdateService extends UpdateDb
             $table = is_array($table) ? $table : [$table];
             foreach ($table as $tbl)
             {
-                $this->pdo->query($tbl);
+                 $this->pdo->query($tbl);
 
             }
         };
@@ -71,10 +71,7 @@ class DbUpdateService extends UpdateDb
         {
             $create_table($projects_table);
         }
-        if (!$this->tableExists('settings'))
-        {
-            $create_table($settings_table);
-        }
+         
         p_l("in update_routine_1");
 
         return true;
